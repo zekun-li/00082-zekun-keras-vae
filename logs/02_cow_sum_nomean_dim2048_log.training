@@ -1,0 +1,357 @@
+Using TensorFlow backend.
+2018-04-15 00:10:30.043772: I tensorflow/core/platform/cpu_feature_guard.cc:137] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2
+2018-04-15 00:10:33.406510: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1030] Found device 0 with properties: 
+name: Tesla K40c major: 3 minor: 5 memoryClockRate(GHz): 0.745
+pciBusID: 0000:84:00.0
+totalMemory: 11.92GiB freeMemory: 11.84GiB
+2018-04-15 00:10:33.406657: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1120] Creating TensorFlow device (/device:GPU:0) -> (device: 0, name: Tesla K40c, pci bus id: 0000:84:00.0, compute capability: 3.5)
+> Preloading all the models for efficiency
+> Loading pose model in model3D_aug_-00_01.mat
+> Loading pose model in model3D_aug_-00_02.mat
+> Loading pose model in model3D_aug_-00_03.mat
+> Loading pose model in model3D_aug_-00_04.mat
+> Loading pose model in model3D_aug_-00_05.mat
+> Loading pose model in model3D_aug_-00_06.mat
+> Loading pose model in model3D_aug_-00_07.mat
+> Loading pose model in model3D_aug_-00_08.mat
+> Loading pose model in model3D_aug_-00_09.mat
+> Loading pose model in model3D_aug_-00_10.mat
+> Loading pose model in model3D_aug_-40_01.mat
+> Loading pose model in model3D_aug_-40_02.mat
+> Loading pose model in model3D_aug_-40_03.mat
+> Loading pose model in model3D_aug_-40_04.mat
+> Loading pose model in model3D_aug_-40_05.mat
+> Loading pose model in model3D_aug_-40_06.mat
+> Loading pose model in model3D_aug_-40_07.mat
+> Loading pose model in model3D_aug_-40_08.mat
+> Loading pose model in model3D_aug_-40_09.mat
+> Loading pose model in model3D_aug_-40_10.mat
+> Loading pose model in model3D_aug_-75_01.mat
+> Loading pose model in model3D_aug_-75_02.mat
+> Loading pose model in model3D_aug_-75_03.mat
+> Loading pose model in model3D_aug_-75_04.mat
+> Loading pose model in model3D_aug_-75_05.mat
+> Loading pose model in model3D_aug_-75_06.mat
+> Loading pose model in model3D_aug_-75_07.mat
+> Loading pose model in model3D_aug_-75_08.mat
+> Loading pose model in model3D_aug_-75_09.mat
+> Loading pose model in model3D_aug_-75_10.mat
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_1 (InputLayer)            (None, 3, 224, 224)  0                                            
+__________________________________________________________________________________________________
+block1_conv1 (Conv2D)           (None, 64, 224, 224) 1792        input_1[0][0]                    
+__________________________________________________________________________________________________
+block1_conv2 (Conv2D)           (None, 64, 112, 112) 36928       block1_conv1[0][0]               
+__________________________________________________________________________________________________
+block2_conv1 (Conv2D)           (None, 128, 112, 112 73856       block1_conv2[0][0]               
+__________________________________________________________________________________________________
+block2_conv2 (Conv2D)           (None, 128, 56, 56)  147584      block2_conv1[0][0]               
+__________________________________________________________________________________________________
+block3_conv1 (Conv2D)           (None, 256, 56, 56)  295168      block2_conv2[0][0]               
+__________________________________________________________________________________________________
+block3_conv2 (Conv2D)           (None, 256, 56, 56)  590080      block3_conv1[0][0]               
+__________________________________________________________________________________________________
+block3_conv3 (Conv2D)           (None, 256, 28, 28)  590080      block3_conv2[0][0]               
+__________________________________________________________________________________________________
+block4_conv1 (Conv2D)           (None, 512, 28, 28)  1180160     block3_conv3[0][0]               
+__________________________________________________________________________________________________
+block4_conv2 (Conv2D)           (None, 512, 28, 28)  2359808     block4_conv1[0][0]               
+__________________________________________________________________________________________________
+block4_conv3 (Conv2D)           (None, 512, 14, 14)  2359808     block4_conv2[0][0]               
+__________________________________________________________________________________________________
+block5_conv1 (Conv2D)           (None, 512, 14, 14)  2359808     block4_conv3[0][0]               
+__________________________________________________________________________________________________
+block5_conv2 (Conv2D)           (None, 512, 14, 14)  2359808     block5_conv1[0][0]               
+__________________________________________________________________________________________________
+block5_conv3 (Conv2D)           (None, 512, 7, 7)    2359808     block5_conv2[0][0]               
+__________________________________________________________________________________________________
+flatten_1 (Flatten)             (None, 25088)        0           block5_conv3[0][0]               
+__________________________________________________________________________________________________
+dense_1 (Dense)                 (None, 2048)         51382272    flatten_1[0][0]                  
+__________________________________________________________________________________________________
+dense_2 (Dense)                 (None, 2048)         51382272    flatten_1[0][0]                  
+__________________________________________________________________________________________________
+sampling (Lambda)               (None, 2048)         0           dense_1[0][0]                    
+                                                                 dense_2[0][0]                    
+__________________________________________________________________________________________________
+decode_dense1 (Dense)           (None, 25088)        51405312    sampling[0][0]                   
+__________________________________________________________________________________________________
+decode_reshape (Reshape)        (None, 512, 7, 7)    0           decode_dense1[0][0]              
+__________________________________________________________________________________________________
+decode_upsample_1 (UpSampling2D (None, 512, 14, 14)  0           decode_reshape[0][0]             
+__________________________________________________________________________________________________
+decode_conv1 (Conv2D)           (None, 256, 14, 14)  1179904     decode_upsample_1[0][0]          
+__________________________________________________________________________________________________
+decode_upsample_2 (UpSampling2D (None, 256, 28, 28)  0           decode_conv1[0][0]               
+__________________________________________________________________________________________________
+decode_conv2 (Conv2D)           (None, 128, 28, 28)  295040      decode_upsample_2[0][0]          
+__________________________________________________________________________________________________
+decode_upsample_3 (UpSampling2D (None, 128, 56, 56)  0           decode_conv2[0][0]               
+__________________________________________________________________________________________________
+decode_conv3 (Conv2D)           (None, 64, 56, 56)   73792       decode_upsample_3[0][0]          
+__________________________________________________________________________________________________
+decode_upsample_4 (UpSampling2D (None, 64, 112, 112) 0           decode_conv3[0][0]               
+__________________________________________________________________________________________________
+decode_conv4 (Conv2D)           (None, 32, 112, 112) 18464       decode_upsample_4[0][0]          
+__________________________________________________________________________________________________
+decode_upsample_5 (UpSampling2D (None, 32, 224, 224) 0           decode_conv4[0][0]               
+__________________________________________________________________________________________________
+decode_conv5 (Conv2D)           (None, 3, 224, 224)  867         decode_upsample_5[0][0]          
+__________________________________________________________________________________________________
+concatenate_1 (Concatenate)     (None, 4096)         0           dense_1[0][0]                    
+                                                                 dense_2[0][0]                    
+==================================================================================================
+Total params: 170,452,611
+Trainable params: 170,452,611
+Non-trainable params: 0
+__________________________________________________________________________________________________
+> [FaceAugDataLayer] Starting pre-fetching processes id: 0
+> [FaceAugDataLayer] BatchLoader_train0  initialized with 2329348 images
+> [FaceAugDataLayer] This will process: 4/32
+> [FaceAugDataLayer] Starting pre-fetching processes id: 1
+> [FaceAugDataLayer] BatchLoader_train1  initialized with 2329348 images
+> [FaceAugDataLayer] This will process: 4/32
+> [FaceAugDataLayer] Starting pre-fetching processes id: 2
+> [FaceAugDataLayer] BatchLoader_train2  initialized with 2329348 images
+> [FaceAugDataLayer] This will process: 4/32
+> [FaceAugDataLayer] Starting pre-fetching processes id: 3
+> [FaceAugDataLayer] BatchLoader_train3  initialized with 2329347 images
+> [FaceAugDataLayer] This will process: 4/32
+> [FaceAugDataLayer] Starting pre-fetching processes id: 4
+> [FaceAugDataLayer] BatchLoader_train4  initialized with 2329347 images
+> [FaceAugDataLayer] This will process: 4/32
+> [FaceAugDataLayer] Starting pre-fetching processes id: 5
+> [FaceAugDataLayer] BatchLoader_train5  initialized with 2329347 images
+> [FaceAugDataLayer] This will process: 4/32
+> [FaceAugDataLayer] Starting pre-fetching processes id: 6
+> [FaceAugDataLayer] BatchLoader_train6  initialized with 2329347 images
+> [FaceAugDataLayer] This will process: 4/32
+> [FaceAugDataLayer] Starting pre-fetching processes id: 7
+> [FaceAugDataLayer] BatchLoader_train7  initialized with 2329347 images
+> [FaceAugDataLayer] This will process: 4/32
+FaceAugDataGen_train initialized for split: training, with bs: 32, im_shape: (224, 224).
+> [FaceAugDataLayer] Starting pre-fetching processes id: 0
+> [FaceAugDataLayer] BatchLoader_valid0 initialized with 586206 images
+> [FaceAugDataLayer] Starting pre-fetching processes id: 1
+> [FaceAugDataLayer] BatchLoader_valid1 initialized with 586206 images
+> [FaceAugDataLayer] Starting pre-fetching processes id: 2
+> [FaceAugDataLayer] BatchLoader_valid2 initialized with 586205 images
+> [FaceAugDataLayer] Starting pre-fetching processes id: 3
+> [FaceAugDataLayer] Process started pre-fetching for Training 3 : nimgs 2329347
+> [FaceAugDataLayer] Process started pre-fetching for Training 2 : nimgs 2329348
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:42: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:36: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+> [FaceAugDataLayer] Process started pre-fetching for Training 1 : nimgs 2329348
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:42: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+> [FaceAugDataLayer] Process started pre-fetching for Training 0 : nimgs 2329348
+> [FaceAugDataLayer] Process started pre-fetching for Training 6 : nimgs 2329347
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:42: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:36: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:42: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:36: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:36: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+> [FaceAugDataLayer] Process started pre-fetching for Training 5 : nimgs 2329347
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:36: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+> [FaceAugDataLayer] BatchLoader_valid3 initialized with 586205 images
+> [FaceAugDataLayer] Process started pre-fetching for Training 7 : nimgs 2329347
+> [FaceAugDataLayer] Starting pre-fetching processes id: 4
+> [FaceAugDataLayer] Process started pre-fetching for Validation 0 : nimgs 586206
+> [FaceAugDataLayer] BatchLoader_valid4 initialized with 586205 images
+> [FaceAugDataLayer] Process started pre-fetching for Validation 3 : nimgs 586205
+> [FaceAugDataLayer] Process started pre-fetching for Validation 1 : nimgs 586206
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:42: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+> [FaceAugDataLayer] Starting pre-fetching processes id: 5
+> [FaceAugDataLayer] BatchLoader_valid5 initialized with 586205 images
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:36: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:42: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+> [FaceAugDataLayer] Process started pre-fetching for Validation 4 : nimgs 586205
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:36: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:42: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+> [FaceAugDataLayer] Starting pre-fetching processes id: 6
+> [FaceAugDataLayer] BatchLoader_valid6 initialized with 586205 images
+> [FaceAugDataLayer] Process started pre-fetching for Validation 5 : nimgs 586205
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:42: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:42: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:42: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:36: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:36: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:42: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:36: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+> [FaceAugDataLayer] Process started pre-fetching for Validation 6 : nimgs 586205
+> [FaceAugDataLayer] Starting pre-fetching processes id: 7
+> [FaceAugDataLayer] BatchLoader_valid7 initialized with 586205 images
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:42: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:36: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+> [FaceAugDataLayer] Process started pre-fetching for Validation 7 : nimgs 586205
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:36: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:36: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:42: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+> [FaceAugDataLayer] Process started pre-fetching for Training 4 : nimgs 2329347
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:36: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:42: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+> [FaceAugDataLayer] Process started pre-fetching for Validation 2 : nimgs 586205
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:42: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:36: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: profile 'ICC Profile': 0h: PCS illuminant is not D50
+libpng warning: iCCP: profile 'ICC Profile': 0h: PCS illuminant is not D50
+libpng warning: iCCP: profile 'ICC Profile': 0h: PCS illuminant is not D50
+libpng warning: iCCP: profile 'ICC Profile': 0h: PCS illuminant is not D50
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+libpng warning: iCCP: known incorrect sRGB profile
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:42: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/aug_tracker.py:36: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  succ, aug_im = align2d.align_main(img, landmarks[0], frontal, flipON)
+libpng warning: iCCP: known incorrect sRGB profile
+FaceAugDataGen_valid initialized for split: validation, with bs: 32, im_shape: (224, 224).
+(32000, 3, 224, 224)
+(32000, 3, 224, 224)
+(32000, 1)
+Epoch 1/10
+
+   1/1000 [..............................] - ETA: 5:59:48 - loss: 9852.9844 - decode_conv5_loss: 9098.8906 - concatenate_1_loss: 754.0934
+   2/1000 [..............................] - ETA: 3:09:13 - loss: 18720.8779 - decode_conv5_loss: 18277.0859 - concatenate_1_loss: 443.7920
+   3/1000 [..............................] - ETA: 2:12:24 - loss: 16913.2044 - decode_conv5_loss: 16268.6406 - concatenate_1_loss: 644.5637
+   4/1000 [..............................] - ETA: 1:43:59 - loss: 16967.0332 - decode_conv5_loss: 16399.0957 - concatenate_1_loss: 567.9374
+   5/1000 [..............................] - ETA: 1:26:54 - loss: 16481.5588 - decode_conv5_loss: 15841.1355 - concatenate_1_loss: 640.4231
+   6/1000 [..............................] - ETA: 1:15:31 - loss: 15851.1213 - decode_conv5_loss: 15246.6888 - concatenate_1_loss: 604.4323
+   7/1000 [..............................] - ETA: 1:07:22 - loss: 14950.7462 - decode_conv5_loss: 14339.4674 - concatenate_1_loss: 611.2788
+   8/1000 [..............................] - ETA: 1:01:15 - loss: 14517.0769 - decode_conv5_loss: 13890.0680 - concatenate_1_loss: 627.0088
+   9/1000 [..............................] - ETA: 56:29 - loss: 13855.9000 - decode_conv5_loss: 13232.9844 - concatenate_1_loss: 622.9154  libpng warning: iCCP: extra compressed data
+
+  10/1000 [..............................] - ETA: 52:40 - loss: 13548.2969 - decode_conv5_loss: 12921.3354 - concatenate_1_loss: 626.9612
+  11/1000 [..............................] - ETA: 49:34 - loss: 13286.6019 - decode_conv5_loss: 12654.1372 - concatenate_1_loss: 632.4646
+  12/1000 [..............................] - ETA: 46:57 - loss: 12981.8273 - decode_conv5_loss: 12352.7417 - concatenate_1_loss: 629.0855
+  13/1000 [..............................] - ETA: 44:45 - loss: 12818.2311 - decode_conv5_loss: 12167.0152 - concatenate_1_loss: 651.2159
+  14/1000 [..............................] - ETA: 42:51 - loss: 12627.0101 - decode_conv5_loss: 11984.9526 - concatenate_1_loss: 642.0575
+  15/1000 [..............................] - ETA: 41:13 - loss: 12484.9578 - decode_conv5_loss: 11820.7020 - concatenate_1_loss: 664.2558
+  16/1000 [..............................] - ETA: 41:55 - loss: 12413.3261 - decode_conv5_loss: 11760.5057 - concatenate_1_loss: 652.8203
+  17/1000 [..............................] - ETA: 40:31 - loss: 12258.3036 - decode_conv5_loss: 11601.2973 - concatenate_1_loss: 657.0061
+  18/1000 [..............................] - ETA: 39:16 - loss: 12202.2424 - decode_conv5_loss: 11559.6934 - concatenate_1_loss: 642.5489
+  19/1000 [..............................] - ETA: 38:09 - loss: 12147.2280 - decode_conv5_loss: 11482.2103 - concatenate_1_loss: 665.0176
+  20/1000 [..............................] - ETA: 37:08 - loss: 12153.7026 - decode_conv5_loss: 11499.5287 - concatenate_1_loss: 654.1738
+  21/1000 [..............................] - ETA: 36:14 - loss: 12118.9169 - decode_conv5_loss: 11440.0370 - concatenate_1_loss: 678.8798libpng warning: iCCP: known incorrect sRGB profile
+
+  22/1000 [..............................] - ETA: 35:23 - loss: 12065.4116 - decode_conv5_loss: 11389.7745 - concatenate_1_loss: 675.6371
+  23/1000 [..............................] - ETA: 34:37 - loss: 12016.7743 - decode_conv5_loss: 11340.1736 - concatenate_1_loss: 676.6006
+  24/1000 [..............................] - ETA: 34:01 - loss: 11906.5149 - decode_conv5_loss: 11232.9256 - concatenate_1_loss: 673.5892
+  25/1000 [..............................] - ETA: 33:28 - loss: 11882.6147 - decode_conv5_loss: 11209.8405 - concatenate_1_loss: 672.7740
+  26/1000 [..............................] - ETA: 32:52 - loss: 11859.7052 - decode_conv5_loss: 11181.2207 - concatenate_1_loss: 678.4844
+  27/1000 [..............................] - ETA: 32:18 - loss: 11832.6875 - decode_conv5_loss: 11157.5083 - concatenate_1_loss: 675.1791
+  28/1000 [..............................] - ETA: 31:47 - loss: 11787.8504 - decode_conv5_loss: 11108.5242 - concatenate_1_loss: 679.3262
+  29/1000 [..............................] - ETA: 31:17 - loss: 11775.2018 - decode_conv5_loss: 11102.7308 - concatenate_1_loss: 672.4709
+  30/1000 [..............................] - ETA: 30:50 - loss: 11728.9474 - decode_conv5_loss: 11051.8233 - concatenate_1_loss: 677.1240
+  31/1000 [..............................] - ETA: 30:24 - loss: 11697.9871 - decode_conv5_loss: 11027.1448 - concatenate_1_loss: 670.8422
+  32/1000 [..............................] - ETA: 30:00 - loss: 11649.3636 - decode_conv5_loss: 10971.8952 - concatenate_1_loss: 677.4683
+  33/1000 [..............................] - ETA: 29:37 - loss: 11612.7195 - decode_conv5_loss: 10938.2211 - concatenate_1_loss: 674.4983
+  34/1000 [>.............................] - ETA: 29:16 - loss: 11570.2628 - decode_conv5_loss: 10891.1139 - concatenate_1_loss: 679.1488
+  35/1000 [>.............................] - ETA: 28:55 - loss: 11526.9659 - decode_conv5_loss: 10855.1972 - concatenate_1_loss: 671.7686
+  36/1000 [>.............................] - ETA: 28:36 - loss: 11467.9259 - decode_conv5_loss: 10790.2775 - concatenate_1_loss: 677.6483
+  37/1000 [>.............................] - ETA: 28:18 - loss: 11421.4774 - decode_conv5_loss: 10751.4174 - concatenate_1_loss: 670.0599
+  38/1000 [>.............................] - ETA: 28:00 - loss: 11383.5593 - decode_conv5_loss: 10707.3804 - concatenate_1_loss: 676.1789
+  39/1000 [>.............................] - ETA: 27:44 - loss: 11428.5944 - decode_conv5_loss: 10759.4633 - concatenate_1_loss: 669.1310
+  40/1000 [>.............................] - ETA: 27:28 - loss: 11401.3485 - decode_conv5_loss: 10726.8665 - concatenate_1_loss: 674.4819
+  41/1000 [>.............................] - ETA: 27:13 - loss: 11374.5884 - decode_conv5_loss: 10706.1811 - concatenate_1_loss: 668.4072
+  42/1000 [>.............................] - ETA: 26:58 - loss: 11347.2090 - decode_conv5_loss: 10673.3983 - concatenate_1_loss: 673.8106
+  43/1000 [>.............................] - ETA: 26:45 - loss: 11302.2341 - decode_conv5_loss: 10631.9615 - concatenate_1_loss: 670.2725
+  44/1000 [>.............................] - ETA: 26:31 - loss: 11308.7242 - decode_conv5_loss: 10633.6162 - concatenate_1_loss: 675.1079
+  45/1000 [>.............................] - ETA: 26:19 - loss: 11317.7722 - decode_conv5_loss: 10646.6414 - concatenate_1_loss: 671.1307
+  46/1000 [>.............................] - ETA: 26:07 - loss: 11306.9253 - decode_conv5_loss: 10634.6661 - concatenate_1_loss: 672.2592
+  47/1000 [>.............................] - ETA: 25:56 - loss: 11292.2422 - decode_conv5_loss: 10619.5671 - concatenate_1_loss: 672.6750libpng warning: iCCP: known incorrect sRGB profile
+
+  48/1000 [>.............................] - ETA: 25:44 - loss: 11317.6084 - decode_conv5_loss: 10648.2744 - concatenate_1_loss: 669.3339
+  49/1000 [>.............................] - ETA: 25:33 - loss: 11328.1050 - decode_conv5_loss: 10657.1102 - concatenate_1_loss: 670.9948
+  50/1000 [>.............................] - ETA: 25:23 - loss: 11325.9321 - decode_conv5_loss: 10659.1283 - concatenate_1_loss: 666.8037
+  51/1000 [>.............................] - ETA: 25:13 - loss: 11261.1110 - decode_conv5_loss: 10595.4098 - concatenate_1_loss: 665.7011
+  52/1000 [>.............................] - ETA: 25:03 - loss: 11211.5262 - decode_conv5_loss: 10545.3622 - concatenate_1_loss: 666.1639
+  53/1000 [>.............................] - ETA: 25:09 - loss: 11155.0905 - decode_conv5_loss: 10487.1348 - concatenate_1_loss: 667.9556
+  54/1000 [>.............................] - ETA: 25:09 - loss: 11128.3638 - decode_conv5_loss: 10459.5700 - concatenate_1_loss: 668.7937
+  55/1000 [>.............................] - ETA: 24:59 - loss: 11117.8648 - decode_conv5_loss: 10448.4821 - concatenate_1_loss: 669.3826
+  56/1000 [>.............................] - ETA: 24:50 - loss: 11126.1339 - decode_conv5_loss: 10457.2978 - concatenate_1_loss: 668.8361
+  57/1000 [>.............................] - ETA: 24:41 - loss: 11130.6864 - decode_conv5_loss: 10458.8548 - concatenate_1_loss: 671.8316
+  58/1000 [>.............................] - ETA: 24:33 - loss: 11165.7382 - decode_conv5_loss: 10489.2400 - concatenate_1_loss: 676.4981
+  59/1000 [>.............................] - ETA: 24:25 - loss: 11216.4356 - decode_conv5_loss: 10541.6560 - concatenate_1_loss: 674.7795
+  60/1000 [>.............................] - ETA: 24:17 - loss: 11206.2218 - decode_conv5_loss: 10530.9027 - concatenate_1_loss: 675.3190
+  61/1000 [>.............................] - ETA: 24:09 - loss: 11179.3603 - decode_conv5_loss: 10504.4424 - concatenate_1_loss: 674.9178
+  62/1000 [>.............................] - ETA: 24:01 - loss: 11146.3331 - decode_conv5_loss: 10472.7189 - concatenate_1_loss: 673.6142
+  63/1000 [>.............................] - ETA: 23:54 - loss: 11109.4144 - decode_conv5_loss: 10434.3800 - concatenate_1_loss: 675.0343
+  64/1000 [>.............................] - ETA: 23:47 - loss: 11095.7687 - decode_conv5_loss: 10421.7414 - concatenate_1_loss: 674.0273
+  65/1000 [>.............................] - ETA: 23:40 - loss: 11062.9736 - decode_conv5_loss: 10388.6146 - concatenate_1_loss: 674.3589
+  66/1000 [>.............................] - ETA: 23:34 - loss: 11050.4563 - decode_conv5_loss: 10377.5951 - concatenate_1_loss: 672.8611
+  67/1000 [=>............................] - ETA: 23:31 - loss: 11044.5430 - decode_conv5_loss: 10370.0278 - concatenate_1_loss: 674.5152
+  68/1000 [=>............................] - ETA: 23:35 - loss: 11063.4957 - decode_conv5_loss: 10392.2335 - concatenate_1_loss: 671.2621
+  69/1000 [=>............................] - ETA: 23:45 - loss: 11071.2007 - decode_conv5_loss: 10395.7923 - concatenate_1_loss: 675.4083
+  70/1000 [=>............................] - ETA: 23:48 - loss: 11058.8515 - decode_conv5_loss: 10384.9943 - concatenate_1_loss: 673.8572
+  71/1000 [=>............................] - ETA: 23:55 - loss: 11051.5994 - decode_conv5_loss: 10380.5698 - concatenate_1_loss: 671.0296

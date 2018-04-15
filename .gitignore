@@ -1,0 +1,9 @@
+0000/
+*.sh.e*
+*.sh.o*
+debug_data/
+model/
+*.pyc
+*.py~
+*.npy
+weights/
