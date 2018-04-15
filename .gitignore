@@ -1,6 +1,8 @@
 0000/
 *.sh.e*
 *.sh.o*
+*.sh.po*
+*.sh.pe*
 debug_data/
 model/
 *.pyc
