@@ -23,7 +23,8 @@ mean_img_file = None
 is_sum = True
 if_xscale = True
 b_size = 32
-saved_weights = None #'weights/01_lr0.0001_latentdim2048_nomeanfile_sumloss_xscale-best-01-10243.84.hdf5'
+#saved_weights = None #'weights/01_lr0.0001_latentdim2048_nomeanfile_sumloss_xscale-best-01-10243.84.hdf5'
+saved_weights = 'weights/11_lr0.0001_latentdim2048_nomeanfile_sumloss_xscale-best-83-3311.36.hdf5'
 lr_rate = 0.0001  
 train_steps_per_epoch=500
 val_steps_per_epoch = 500
@@ -35,7 +36,7 @@ data_path = os.environ['TMPDIR']+'/'
 #data_path = 'debug_data/'
 nb_gpus = len(os.environ["CUDA_VISIBLE_DEVICES"].split(','))
 
-prefix = '11_lr'+ str(lr_rate) + '_latentdim' + str(latent_dim)
+prefix = '12_lr'+ str(lr_rate) + '_latentdim' + str(latent_dim)
 if mean_img_file is not None:
     prefix +='_usemeanfile'
 else:

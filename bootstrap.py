@@ -16,7 +16,7 @@ dataTars = glob.glob( dataTars_string + '/*.tar' )
 precompute_data = '/nfs/isicvlnas01/projects/glaive/expts/00036-anhttran_clean_MsCeleb_poseCNN/expts/final_data/'
 TMPDIR = os.environ['TMPDIR']+'/'
 
-log_file = '/11_cow_sum_nomean_dim2048_log.training'
+log_file = '/12_cow_sum_nomean_dim2048_log.training'
 
 def myprint(sometext, printON=False):
     if printON:
