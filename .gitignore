@@ -9,3 +9,6 @@ model/
 *.py~
 *.npy
 weights/
+*.hdf5
+*.log
+*.training

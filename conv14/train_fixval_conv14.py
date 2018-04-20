@@ -3,11 +3,11 @@ import os
 sys.path.insert(0, '/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/')
 os.environ['KERAS_BACKEND'] = 'tensorflow' 
 #os.environ['CUDA_VISIBLE_DEVICES'] = '0,1,2,3' 
-from vae_face_aug_datagen_prefetch_mp_queue import  FaceAugDataGen
+from vae_conv_face_aug_datagen_prefetch_mp_queue import  FaceAugDataGen
 import keras
 from keras.optimizers import SGD
 from keras.utils import multi_gpu_model
-from vae import VAE
+from vae_conv14 import VAE
 from keras.callbacks import ModelCheckpoint,CSVLogger
 from keras.callbacks import Callback
 from keras import metrics
@@ -23,21 +23,21 @@ mean_img_file = None
 is_sum = True
 if_xscale = True
 b_size = 32
-#saved_weights = 'weights/12_lr0.0001_latentdim2048_nomeanfile_sumloss_xscale-best-25-3097.78.hdf5'
-saved_weights = 'weights/12_lr0.0001_latentdim2048_nomeanfile_sumloss_xscale-best-94-2743.67.hdf5'
+saved_weights = None
 lr_rate = 0.0001  
-train_steps_per_epoch=1
-val_steps_per_epoch = 1
-#lr = 0.0001
-latent_dim = 2048
+train_steps_per_epoch=500
+val_steps_per_epoch = 500
+#latent_dim = 2048
+latent_dim = 4096
+
 
 #data_path = '/lfs2/tmp/anh-train/
-#data_path = os.environ['TMPDIR']+'/'
-#data_path = '/lfs_ssd/uge-tmpdir/295817.1.all.q/'
-data_path = 'debug_data/'
+data_path = os.environ['TMPDIR']+'/'
+#data_path = '../debug_data/'
 nb_gpus = len(os.environ["CUDA_VISIBLE_DEVICES"].split(','))
 
-prefix = 'temp01_lr'+ str(lr_rate) + '_latentdim' + str(latent_dim)
+#prefix = '03_lr'+ str(lr_rate) + '_latentdim' + str(latent_dim)
+prefix = '01_lr'+ str(lr_rate) + '_conv14'
 if mean_img_file is not None:
     prefix +='_usemeanfile'
 else:
@@ -139,23 +139,13 @@ if saved_weights is not None:
     assert os.path.isfile(saved_weights)
     model.load_weights(saved_weights)
 
-'''
-multi_model = multi_gpu_model(model, gpus = nb_gpus)
-#sgd = SGD(lr=lr_rate, decay=0.0, momentum=0.9, nesterov=False)
-#multi_model.compile(optimizer = sgd, loss = 'sparse_categorical_crossentropy', metrics = ['accuracy']) ############# PARAMS NOT FINALIZED#####
-rmsprop = keras.optimizers.RMSprop(lr=lr_rate, rho=0.9, epsilon=None, decay=0.0)
-multi_model.compile(optimizer=rmsprop)                                   
-model.summary()                                          
-multi_model.summary()
-'''
-
-#model.summary()
+model.summary()
 # generators
 if mean_img_file is not None:
-    #train_datagen = FaceAugDataGen(mode = 'training', batch_size=b_size ,im_shape = (224,224), source = data_path, mean_file = mean_img_file, latent_dim = latent_dim , if_xscale = if_xscale)
+    train_datagen = FaceAugDataGen(mode = 'training', batch_size=b_size ,im_shape = (224,224), source = data_path, mean_file = mean_img_file, latent_dim = latent_dim , if_xscale = if_xscale)
     val_datagen = FaceAugDataGen(mode = 'validation', batch_size=b_size ,im_shape = (224,224), source = data_path, mean_file = mean_img_file ,latent_dim = latent_dim, if_xscale = if_xscale)
 else:
-    #train_datagen = FaceAugDataGen(mode = 'training', batch_size=b_size ,im_shape = (224,224), source = data_path, latent_dim = latent_dim, if_xscale = if_xscale)
+    train_datagen = FaceAugDataGen(mode = 'training', batch_size=b_size ,im_shape = (224,224), source = data_path, latent_dim = latent_dim, if_xscale = if_xscale)
     val_datagen = FaceAugDataGen(mode = 'validation', batch_size=b_size ,im_shape = (224,224), source = data_path, latent_dim = latent_dim, if_xscale = if_xscale)
 
 # callbacks
@@ -182,31 +172,10 @@ valid_X1_2 = np.concatenate(valid_X1_2, axis = 0)
 print (valid_X.shape)
 print (valid_X1_1.shape)
 print (valid_X1_2.shape)
-#mycallbacks = [csv_logger, check_point, check_point_best]
-mycallbacks = [check_point_best]
+mycallbacks = [csv_logger, check_point, check_point_best]
+#mycallbacks = [check_point]
 
 #H = multi_model.fit_generator(generator = train_datagen, steps_per_epoch = 1000, epochs = 600, validation_data = (valid_X, valid_Y),  callbacks =mycallbacks)
-#H = model.fit_generator(generator = train_datagen, steps_per_epoch = train_steps_per_epoch, epochs = 100, validation_data = (valid_X, [valid_X1_1,valid_X1_2]), callbacks =mycallbacks )
+H = model.fit_generator(generator = train_datagen, steps_per_epoch = train_steps_per_epoch, epochs = 100, validation_data = (valid_X, [valid_X1_1,valid_X1_2]), callbacks =mycallbacks )
 #multi_model.evaluate(x = valid_X, y = valid_Y)
-
-def train():
-    H = model.fit(valid_X, [valid_X1_1, valid_X1_2], epochs = 10, validation_data = (valid_X[0:10], [valid_X1_1[0:10],valid_X1_2[0:10]]), callbacks =mycallbacks )
-
-def visualize():
-    valid_x = valid_X[0:10]
-    predict_x = model.predict(valid_x)[0]
-    valid_x = valid_x * 255. + 128.
-    predict_x = predict_x * 255 + 128.
-    import cv2 
-    i = 0   
-    for vx, px in zip(valid_x, predict_x):
-        cv2.imwrite('in_'+str(i)+'.jpg', vx.transpose(1,2,0))
-        cv2.imwrite('out_'+str(i)+'.jpg', px.transpose(1,2,0))
-        i = i+1
-
-
-
-if __name__ == '__main__':
-    visualize()
-
 
