@@ -8,7 +8,7 @@ import keras
 from keras.optimizers import SGD
 from keras.utils import multi_gpu_model
 from vae_conv14 import VAE
-from keras.callbacks import ModelCheckpoint,CSVLogger
+from keras.callbacks import ModelCheckpoint,CSVLogger, TensorBoard
 from keras.callbacks import Callback
 from keras import metrics
 import keras.backend as K
@@ -23,8 +23,8 @@ mean_img_file = None
 is_sum = True
 if_xscale = True
 b_size = 32
-saved_weights = None
-lr_rate = 0.0001  
+saved_weights = 'weights/02_lr0.0001_conv14_nomeanfile_sumloss_xscale-best-93-2524.28.hdf5'
+lr_rate = 0.00001  
 train_steps_per_epoch=500
 val_steps_per_epoch = 500
 #latent_dim = 2048
@@ -37,7 +37,7 @@ data_path = os.environ['TMPDIR']+'/'
 nb_gpus = len(os.environ["CUDA_VISIBLE_DEVICES"].split(','))
 
 #prefix = '03_lr'+ str(lr_rate) + '_latentdim' + str(latent_dim)
-prefix = '01_lr'+ str(lr_rate) + '_conv14'
+prefix = '03_lr'+ str(lr_rate) + '_conv14'
 if mean_img_file is not None:
     prefix +='_usemeanfile'
 else:
@@ -54,6 +54,7 @@ else:
     prefix += '_noxscale'
 
 csv_logger = CSVLogger('logs/'+prefix + '_train.log')     
+tensor_board = TensorBoard( log_dir= 'logs/'+prefix + '_tb') 
 model_save_path = 'weights/'+prefix + '-{epoch:02d}-{val_loss:.2f}.hdf5' 
 model_save_best = 'weights/'+prefix + '-best-{epoch:02d}-{val_loss:.2f}.hdf5'  
 
@@ -172,7 +173,8 @@ valid_X1_2 = np.concatenate(valid_X1_2, axis = 0)
 print (valid_X.shape)
 print (valid_X1_1.shape)
 print (valid_X1_2.shape)
-mycallbacks = [csv_logger, check_point, check_point_best]
+mycallbacks = [csv_logger, check_point, check_point_best, tensor_board]
+mycallbacks = [csv_logger,  check_point_best, tensor_board]
 #mycallbacks = [check_point]
 
 #H = multi_model.fit_generator(generator = train_datagen, steps_per_epoch = 1000, epochs = 600, validation_data = (valid_X, valid_Y),  callbacks =mycallbacks)

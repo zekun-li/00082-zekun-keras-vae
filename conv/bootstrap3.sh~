@@ -1,0 +1,11 @@
+source ~/.bashrc
+python2 bootstrap.py 
+python2 train_fixval_conv.py --ifxscale \
+--bottleneck-filter-size 7 \
+--bsize 32 \
+--lr 0.0001 \
+--train-steps-per-epoch 500 \
+--val-steps-per-epoch 500 \
+--ith 0
+
+#--saved-weights

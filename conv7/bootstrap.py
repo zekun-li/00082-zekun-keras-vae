@@ -18,7 +18,7 @@ dataTars = glob.glob( dataTars_string + '/*.tar' )
 precompute_data = '/nfs/isicvlnas01/projects/glaive/expts/00082-zekun-keras-vae/final_data/'
 TMPDIR = os.environ['TMPDIR']+'/'
 
-log_file = '/01_vggface_align2d_sum_nomean_conv7_log.training'
+log_file = '/03_vggface_align2d_sum_nomean_conv7_log.training'
 
 def myprint(sometext, printON=False):
     if printON:

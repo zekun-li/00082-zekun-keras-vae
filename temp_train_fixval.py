@@ -3,11 +3,11 @@ import os
 sys.path.insert(0, '/nfs/isicvlnas01/users/iacopo/codes/Aug_Layer_v2/')
 os.environ['KERAS_BACKEND'] = 'tensorflow' 
 #os.environ['CUDA_VISIBLE_DEVICES'] = '0,1,2,3' 
-from vae_face_aug_datagen_prefetch_mp_queue import  FaceAugDataGen
+from vae_conv_face_aug_datagen_prefetch_mp_queue import  FaceAugDataGen
 import keras
 from keras.optimizers import SGD
 from keras.utils import multi_gpu_model
-from vae import VAE
+from vae_conv14 import VAE
 from keras.callbacks import ModelCheckpoint,CSVLogger
 from keras.callbacks import Callback
 from keras import metrics
@@ -28,9 +28,8 @@ saved_weights = 'weights/12_lr0.0001_latentdim2048_nomeanfile_sumloss_xscale-bes
 lr_rate = 0.0001  
 train_steps_per_epoch=1
 val_steps_per_epoch = 1
-#lr = 0.0001
-latent_dim = 2048
-
+#latent_dim = 2048
+latent_dim = 4096
 #data_path = '/lfs2/tmp/anh-train/
 #data_path = os.environ['TMPDIR']+'/'
 #data_path = '/lfs_ssd/uge-tmpdir/295817.1.all.q/'
@@ -194,6 +193,7 @@ def train():
 
 def visualize():
     valid_x = valid_X[0:10]
+    #valid_x = np.load('valid_X.npy')
     predict_x = model.predict(valid_x)[0]
     valid_x = valid_x * 255. + 128.
     predict_x = predict_x * 255 + 128.

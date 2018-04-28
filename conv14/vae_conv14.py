@@ -87,9 +87,9 @@ def VAE(original_dim = (224,224,3), latent_dim = 2048, epsilon_std = 1.0, lr = 0
     '''
 
     #up1 = UpSampling2D(size=(2, 2),name='decode_upsample_1')(z)                       
-    #decode_conv2_1 = Conv2D(256, (3, 3),padding='same', activation='relu',name='decode_conv1')(up1) 
+    decode_conv2_1 = Conv2D(256, (3, 3),padding='same', activation='relu',name='decode_conv1')(z) 
 
-    up2 = UpSampling2D(size=(2, 2),name='decode_upsample_2')(z)                  
+    up2 = UpSampling2D(size=(2, 2),name='decode_upsample_2')(decode_conv2_1)                  
     decode_conv2_2 = Conv2D(128, (3, 3), padding='same',activation='relu',name='decode_conv2')(up2) 
 
     up3 = UpSampling2D(size=(2, 2),name='decode_upsample_3')(decode_conv2_2)             
